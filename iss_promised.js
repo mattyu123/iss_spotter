@@ -11,12 +11,14 @@ const fetchCoordsByIP = function(body) {
   return request(`http://ipwho.is/${data}`)
 }
 
+//Get the latitude and longitude coordinates based on IP address
 const fetchISSFlyOverTimes = function(body) {
   const {latitude, longitude} = JSON.parse(body)
-  const flyover = `https://iss-flyover.herokuapp.com/json/?lat=${latitude}&lon=${longitude}`;
+  const flyover = `https://iss-flyover.dickherokuapp.com/json/?lat=${latitude}&lon=${longitude}`;
   return request(flyover)
 }
 
+//Chain all our functions together
 const nextISSTimesForMyLocation = function() {
   return fetchMyIP()
     .then(fetchCoordsByIP)

@@ -45,6 +45,28 @@ const fetchCoordsByIP = (ip, callback = () => {}) => {
 
     callback(null,{latitude, longitude})
   })
+};
+
+//function that calls an API which will provide flyover times for the ISS
+const fetchISSFlyOverTimes = ({latitude, longitude}, callback) => {
+  const flyover = `https://iss-flyover.herokuapp.com/json/?lat=${latitude}&lon=${longitude}`
+
+  request(flyover, (error, response, body) => {
+    
+    if(error) {
+      callback(error, null);
+      return;
+    }
+    
+    if (response.statusCode !== 200) {
+      const msg = `Status code ${response.statusCode} when fetching IP. Response ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+    
+    const data = JSON.parse(body)
+    return callback(null, data.response)
+  })
 }
 
-module.exports = { fetchCoordsByIP };
+module.exports = { fetchISSFlyOverTimes };
